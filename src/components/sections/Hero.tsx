@@ -2,7 +2,6 @@
 
 import { BrandIcon } from "@/components/ui/BrandIcon";
 import { MagneticWrapper } from "@/components/animations/MagneticWrapper";
-import { useIsTouchDevice } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 /**
@@ -10,13 +9,10 @@ import { cn } from "@/lib/utils";
  * trays (Technology, About, Products). Inside the frame, the video
  * fills the card and the headline + CTAs are centered on top of it.
  *
- * On touch devices the <video> element is omitted (it's a 13.5 MB asset)
- * and the dark backdrop stands in until /images/hero-poster.jpg is
- * provided.
+ * Video renders on all devices (playsInline + preload="metadata" for
+ * progressive mobile streaming). A dark scrim keeps text readable.
  */
 export function Hero() {
-    const isTouch = useIsTouchDevice();
-
     return (
         <section
             id="hero"
@@ -27,26 +23,24 @@ export function Hero() {
                 className={cn(
                     "relative max-w-7xl mx-auto",
                     "rounded-[36px] md:rounded-[44px] overflow-hidden",
-                    "bg-ink border-[22px] border-green",
+                    "bg-ink border-[12px] md:border-[22px] border-green",
                     "shadow-[0_10px_0_0_var(--color-green-deep),0_30px_80px_rgba(141,198,65,0.30)]",
                     "min-h-[72vh] md:min-h-[78vh]"
                 )}
             >
-                {!isTouch && (
-                    <video
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        preload="metadata"
-                        poster="/images/hero-poster.jpg"
-                        disablePictureInPicture
-                        className="absolute inset-0 w-full h-full object-cover"
-                        aria-hidden
-                    >
-                        <source src="/videos/hero.mp4" type="video/mp4" />
-                    </video>
-                )}
+                <video
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    poster="/images/hero-poster.jpg"
+                    disablePictureInPicture
+                    className="absolute inset-0 w-full h-full object-cover"
+                    aria-hidden
+                >
+                    <source src="/videos/hero.mp4" type="video/mp4" />
+                </video>
 
                 {/* Dark scrim — keeps centered text readable */}
                 <div

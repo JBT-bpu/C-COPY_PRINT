@@ -32,7 +32,7 @@ export function Clients() {
     return (
         <section
             ref={ref}
-            className="py-16 overflow-hidden"
+            className="relative py-16 overflow-hidden"
             aria-label="לקוחות"
         >
             <div className="max-w-7xl mx-auto px-6 mb-8">

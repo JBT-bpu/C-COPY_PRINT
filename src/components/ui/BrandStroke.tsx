@@ -23,25 +23,34 @@ import { usePrefersReducedMotion } from "@/lib/motion";
  */
 
 const INITIAL_VISIBLE = 0.1; // 10% drawn at start
-const MAIN_STROKE = 120;
-const SHADOW_STROKE = 128;
-const BEVEL_STROKE = 18;
+
+// Desktop stroke widths (≥ 1024 px viewport)
+const DESKTO_MAIN = 120;
+const DESKTO_SHADOW = 128;
+const DESKTO_BEVEL = 18;
+
+/** Viewport-responsive scale: 1 on desktop, ~0.35 on 375 px mobile. */
+function strokeScale(W: number): number {
+    return Math.min(1, Math.max(0.3, W / 1024));
+}
 
 /**
  * Build an S-shaped stroke path in real pixel coordinates.
  * The path snakes from top-right → left → right → left → bottom.
  *
- * Uses cubic Bézier curves (C) with generous radii so the 120 px
- * slab rounds smoothly — no pinched or angular bends.
+ * Uses cubic Bézier curves (C) with generous radii so the slab
+ * rounds smoothly. The bend radius scales with the viewport so
+ * mobile curves stay proportional.
  */
-function buildStrokePath(W: number, H: number): string {
+function buildStrokePath(W: number, H: number, scale: number): string {
+    const mainW = Math.round(DESKTO_MAIN * scale);
     const xR = W * 0.85;
     const xL = W * 0.15;
     const xM = W * 0.50;
 
-    // Generous bend radius — at least 2× the main stroke width so the
-    // 120 px slab never looks pinched. Capped by available height.
-    const R = Math.max(MAIN_STROKE * 2, Math.min(W * 0.18, H * 0.08));
+    // Generous bend radius — at least 2× the scaled stroke width so the
+    // slab never looks pinched. Capped by available height.
+    const R = Math.max(mainW * 2, Math.min(W * 0.18, H * 0.08));
 
     const y1 = H * 0.22;
     const y2 = H * 0.50;
@@ -96,10 +105,13 @@ export function BrandStroke() {
         return () => observer.disconnect();
     }, []);
 
-    // Build path from real dimensions
+    // Responsive scale factor (1 on desktop, ~0.35 on 375px mobile)
+    const scale = dims ? strokeScale(dims.w) : 1;
+
+    // Build path from real dimensions (scale affects bend radius)
     const pathD = useMemo(
-        () => (dims ? buildStrokePath(dims.w, dims.h) : ""),
-        [dims]
+        () => (dims ? buildStrokePath(dims.w, dims.h, scale) : ""),
+        [dims, scale]
     );
 
     // Measure path length synchronously after DOM update
@@ -207,7 +219,7 @@ export function BrandStroke() {
                     width="140%"
                     height="140%"
                 >
-                    <feGaussianBlur stdDeviation="6" result="blur" />
+                    <feGaussianBlur stdDeviation={Math.max(2, Math.round(6 * scale))} result="blur" />
                     <feMerge>
                         <feMergeNode in="blur" />
                         <feMergeNode in="SourceGraphic" />
@@ -219,10 +231,10 @@ export function BrandStroke() {
             <path
                 ref={shadowRef}
                 d={pathD}
-                transform="translate(0,3)"
+                transform={`translate(0,${Math.round(3 * scale)})`}
                 stroke="var(--color-green-deep)"
                 strokeLinecap="round"
-                strokeWidth={SHADOW_STROKE}
+                strokeWidth={Math.round(DESKTO_SHADOW * scale)}
                 opacity="0.4"
                 style={dashStyle}
             />
@@ -233,7 +245,7 @@ export function BrandStroke() {
                 d={pathD}
                 stroke="var(--color-green)"
                 strokeLinecap="round"
-                strokeWidth={MAIN_STROKE}
+                strokeWidth={Math.round(DESKTO_MAIN * scale)}
                 filter="url(#brand-stroke-glow)"
                 style={dashStyle}
             />
@@ -242,10 +254,10 @@ export function BrandStroke() {
             <path
                 ref={bevelRef}
                 d={pathD}
-                transform="translate(0,-5)"
+                transform={`translate(0,${-Math.round(5 * scale)})`}
                 stroke="var(--color-green-soft)"
                 strokeLinecap="round"
-                strokeWidth={BEVEL_STROKE}
+                strokeWidth={Math.round(DESKTO_BEVEL * scale)}
                 opacity="0.75"
                 style={dashStyle}
             />
@@ -256,7 +268,7 @@ export function BrandStroke() {
                     ref={pulseRef}
                     cx={dims.w * 0.85}
                     cy={0}
-                    r={14}
+                    r={Math.round(14 * scale)}
                     fill="var(--color-green-soft)"
                     opacity="0.75"
                     className="[animation:brand-stroke-pulse_1.8s_ease-in-out_infinite]"
