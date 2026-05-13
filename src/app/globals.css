@@ -1,0 +1,297 @@
+@import "tailwindcss";
+
+@theme {
+  --color-green: #8DC641;
+  --color-green-deep: #6BA82D;
+  --color-green-soft: #B8E26F;
+  --color-green-pale: #E9F5D6;
+  --color-green-mist: #F5FAE9;
+
+  --color-ink: #0F1A05;
+  --color-ink-soft: #2D3920;
+
+  --color-cream: #FAFBF6;
+  --color-line: #E5EAD9;
+
+  --font-sans: var(--font-rubik), system-ui, sans-serif;
+  --font-display: var(--font-fraunces), Georgia, serif;
+
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --radius-pill: 9999px;
+  --radius-card: 36px;
+  --radius-section: 60px;
+}
+
+html {
+  /* Lime green bleeds to all viewport edges so the cream "page card"
+     inside body sits on a continuous architectural green frame. */
+  background: var(--color-green);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+body {
+  min-height: 100dvh;
+  background: var(--color-green);
+  color: var(--color-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+::selection {
+  background: var(--color-green);
+  color: var(--color-ink);
+}
+
+/* ── View Transitions API ── */
+@supports (view-transition-name: none) {
+  ::view-transition-old(root) {
+    animation: 0.3s ease-in-out both vt-fade-out;
+  }
+
+  ::view-transition-new(root) {
+    animation: 0.3s ease-in-out both vt-fade-in;
+  }
+}
+
+@keyframes vt-fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes vt-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── CSS Scroll-Driven Animations (Chrome 115+) ── */
+@supports (animation-timeline: scroll()) {
+  .scroll-parallax-slow {
+    animation: scroll-up linear both;
+    animation-timeline: scroll();
+    animation-range: entry 0% entry 100%;
+    --scroll-distance: -60px;
+  }
+
+  .scroll-parallax-fast {
+    animation: scroll-up linear both;
+    animation-timeline: scroll();
+    animation-range: entry 0% entry 100%;
+    --scroll-distance: -120px;
+  }
+
+  .scroll-reveal-css {
+    animation: scroll-reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 70%;
+  }
+}
+
+@keyframes scroll-up {
+  from {
+    translate: 0 0;
+  }
+
+  to {
+    translate: 0 var(--scroll-distance, -60px);
+  }
+}
+
+@keyframes scroll-reveal {
+  from {
+    opacity: 0;
+    translate: 0 40px;
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* ── Variable font weight animation support ── */
+.font-weight-animate {
+  transition: font-weight 0.1s linear;
+  font-variation-settings: "wght" var(--font-weight, 800);
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   "Maximum WOW" demo effects — print-production atmosphere.
+   Lifted from ccopy_maximum_wow_html_demo.html so we get the same vibe
+   without recoding the CSS in JS.
+   ───────────────────────────────────────────────────────────────────── */
+
+/* Simulated print-press background: dark slats moving past the camera. */
+.machine-sim {
+  position: absolute;
+  inset: -10%;
+  transform: skewY(-4deg) scale(1.08);
+  filter: contrast(1.18) saturate(.8);
+  background:
+    linear-gradient(110deg, transparent 0 22%, rgba(255, 255, 255, .08) 25%, transparent 31%),
+    repeating-linear-gradient(90deg, #0b0e11 0 34px, #242a2f 35px 42px, #090a0c 43px 78px),
+    linear-gradient(180deg, #171a1f, #050607);
+  animation: machineMove 7s linear infinite;
+}
+
+.machine-sim::after {
+  content: "";
+  position: absolute;
+  top: 46%;
+  inset-inline-end: -20%;
+  width: 140%;
+  height: 150px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .85), rgba(255, 255, 255, .22), transparent);
+  filter: blur(8px);
+  opacity: .7;
+  animation: paperFeed 2.4s linear infinite;
+}
+
+@keyframes machineMove {
+  0% {
+    background-position: 0 0, 0 0, 0 0;
+  }
+
+  100% {
+    background-position: 420px 0, 240px 0, 0 0;
+  }
+}
+
+@keyframes paperFeed {
+  0% {
+    transform: translateX(-20%);
+    opacity: .2;
+  }
+
+  45% {
+    opacity: .75;
+  }
+
+  100% {
+    transform: translateX(30%);
+    opacity: .2;
+  }
+}
+
+/* Print-head scan line sweeping across the hero. */
+.scan-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  inset-inline-end: 0;
+  width: 4px;
+  background: linear-gradient(180deg, transparent, var(--color-green-soft), transparent);
+  box-shadow: 0 0 28px var(--color-green), 0 0 80px rgba(141, 198, 65, .8);
+  opacity: .72;
+  animation: scan 5.8s ease-in-out infinite;
+}
+
+@keyframes scan {
+
+  0%,
+  100% {
+    inset-inline-end: 5%;
+    opacity: .05;
+  }
+
+  45% {
+    opacity: .75;
+  }
+
+  50% {
+    inset-inline-end: 82%;
+    opacity: .86;
+  }
+}
+
+/* Headline gradient sweep — like the print-head just inked the text. */
+.print-reveal {
+  background: linear-gradient(90deg, #fff 0%, #fff 45%, var(--color-green-soft) 50%, #fff 58%, #fff 100%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: printReveal 4.5s ease-in-out infinite;
+}
+
+@keyframes printReveal {
+
+  0%,
+  100% {
+    background-position: 100% 0;
+  }
+
+  55% {
+    background-position: 0% 0;
+  }
+}
+
+/* Pulsing leading-edge dot on the BrandStroke slab. */
+@keyframes brand-stroke-pulse {
+
+  0%,
+  100% {
+    r: 14;
+    opacity: 0.75;
+  }
+
+  50% {
+    r: 20;
+    opacity: 1;
+  }
+}
+
+/* Simulated printed-sample press image — a band of green ink running through
+   horizontal slats. Used in the Technology split section. */
+.print-image {
+  position: relative;
+  min-height: 310px;
+  border-radius: 32px;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .12), 0 24px 70px rgba(0, 0, 0, .18);
+  background:
+    linear-gradient(115deg, transparent 0 28%, rgba(141, 198, 65, .55) 29%, transparent 32%),
+    repeating-linear-gradient(90deg, #161b20 0 44px, #343a41 45px 54px, #101317 55px 100px);
+}
+
+.print-image::after {
+  /* Static highlight band across the simulated press — was an infinite
+     paperFeed animation, but that ran every frame the section was in view
+     and ate compositing budget; the static version reads identical at a
+     glance and costs nothing. */
+  content: "";
+  position: absolute;
+  top: 52%;
+  inset-inline-start: -20%;
+  width: 140%;
+  height: 80px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .8), transparent);
+  filter: blur(8px);
+  opacity: .55;
+}
