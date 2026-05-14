@@ -1,12 +1,18 @@
+import fs from "node:fs";
+import path from "node:path";
 import { ImageResponse } from "next/og";
 
 export const alt = "C-COPY · Premium printing in Tel Aviv since 1986";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
+const logoBuffer = fs.readFileSync(
+  path.join(process.cwd(), "public/images/logo.png")
+);
+const logoDataUri = `data:image/png;base64,${logoBuffer.toString("base64")}`;
+
 const CREAM = "#FAFBF6";
 const GREEN = "#8DC641";
-const GREEN_DEEP = "#6BA82D";
 const INK = "#0F1A05";
 const INK_SOFT = "#2D3920";
 const LINE = "#E5EAD9";
@@ -58,33 +64,16 @@ export default async function Image() {
           }}
         />
 
-        {/* Header — brand mark */}
-        <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-          <div
-            style={{
-              width: 84,
-              height: 84,
-              borderRadius: "50%",
-              border: `5px solid ${GREEN}`,
-              background: "white",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontWeight: 900,
-              fontSize: 44,
-              color: GREEN_DEEP,
-            }}
-          >
-            C
-          </div>
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <div style={{ fontSize: 30, fontWeight: 800, color: INK, letterSpacing: -1 }}>
-              C-COPY
-            </div>
-            <div style={{ fontSize: 18, color: INK_SOFT, marginTop: 2 }}>
-              שיא קופי · Since 1986
-            </div>
-          </div>
+        {/* Header — official C-COPY wordmark */}
+        <div style={{ display: "flex", alignItems: "center" }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={logoDataUri}
+            alt="C-Copy"
+            width={300}
+            height={92}
+            style={{ height: 92, width: "auto" }}
+          />
         </div>
 
         {/* Headline */}

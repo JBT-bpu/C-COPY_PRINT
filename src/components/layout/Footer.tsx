@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { BrandIcon } from "@/components/ui/BrandIcon";
 import { BRANCHES, PRIMARY_BRANCH, phoneHref } from "@/content/branches";
 
@@ -19,15 +20,14 @@ export function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12">
                     {/* Brand */}
                     <div>
-                        <div className="flex items-center gap-3 mb-4">
-                            <span className="flex size-10 items-center justify-center rounded-full border-[3px] border-green text-green-deep font-extrabold text-lg bg-white">
-                                C
-                            </span>
-                            <span className="text-base font-bold text-ink leading-tight">
-                                C-COPY
-                                <br />
-                                <span className="text-ink-soft text-xs font-normal">שיא קופי · מאז 1986</span>
-                            </span>
+                        <div className="mb-4">
+                            <Image
+                                src="/images/logo.png"
+                                alt="C-Copy — שיא קופי"
+                                width={180}
+                                height={56}
+                                className="h-12 w-auto"
+                            />
                         </div>
                         <p className="text-ink-soft leading-relaxed text-sm mb-5 max-w-xs">
                             בית הדפוס המוביל בישראל. דפוס דיגיטלי, פורמט רחב, אריזות,

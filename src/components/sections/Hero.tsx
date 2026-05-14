@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { BrandIcon } from "@/components/ui/BrandIcon";
 import { MagneticWrapper } from "@/components/animations/MagneticWrapper";
 import { cn } from "@/lib/utils";
@@ -54,12 +55,18 @@ export function Hero() {
 
                 {/* Centered overlay — kicker, headline, paragraph, CTAs */}
                 <div className="relative z-10 flex flex-col items-center justify-center text-center min-h-[inherit] px-6 py-16 md:py-24">
-                    <span className="inline-flex items-center gap-2.5 rounded-pill bg-cream/95 backdrop-blur-sm border border-cream/40 px-4 py-2 text-xs md:text-sm font-semibold text-ink shadow-sm mb-6">
+                    <span className="inline-flex items-center gap-2.5 rounded-pill bg-cream/95 backdrop-blur-sm border border-cream/40 px-4 py-2 shadow-sm mb-6">
                         <span className="flex gap-1" aria-hidden>
                             <span className="w-4 h-1.5 rounded-full bg-green" />
                             <span className="w-2 h-1.5 rounded-full bg-green-deep" />
                         </span>
-                        C-COPY · בית דפוס דיגיטלי מאז 1986
+                        <Image
+                            src="/images/logo.png"
+                            alt="C-Copy — שיא קופי"
+                            width={120}
+                            height={32}
+                            className="h-6 md:h-7 w-auto"
+                        />
                     </span>
 
                     <h1 className="font-extrabold tracking-tight leading-[0.98] text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-cream mb-6 max-w-3xl [text-shadow:0_2px_24px_rgba(15,26,5,0.55)]">

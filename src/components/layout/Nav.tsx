@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "motion/react";
 import { NAV_LINKS } from "@/content/navigation";
 import { ViewTransitionLink } from "@/components/ui/ViewTransitionLink";
@@ -115,17 +116,17 @@ export function Nav() {
                     {/* Logo — RTL: on the right */}
                     <a
                         href="#"
-                        className="flex items-center gap-3 shrink-0"
+                        className="flex items-center shrink-0"
                         aria-label="C-Copy — חזרה לדף הבית"
                     >
-                        <span className="flex size-10 items-center justify-center rounded-full border-[3px] border-green text-green font-extrabold text-lg">
-                            C
-                        </span>
-                        <span className="hidden sm:block text-sm font-semibold text-ink leading-tight">
-                            C-COPY
-                            <br />
-                            <span className="text-ink-soft font-normal text-xs">מאז 1986</span>
-                        </span>
+                        <Image
+                            src="/images/logo.png"
+                            alt="C-Copy — שיא קופי"
+                            width={140}
+                            height={44}
+                            priority
+                            className="h-9 md:h-10 w-auto"
+                        />
                     </a>
 
                     {/* Desktop links — center */}
