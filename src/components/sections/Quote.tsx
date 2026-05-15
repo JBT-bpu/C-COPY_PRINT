@@ -4,6 +4,8 @@ import { useState, useRef } from "react";
 import { BrandIcon } from "@/components/ui/BrandIcon";
 import { PRIMARY_BRANCH, phoneHref } from "@/content/branches";
 import { MagneticWrapper } from "@/components/animations/MagneticWrapper";
+import { ScanLine } from "@/components/animations/ScanLine";
+import { CropMarks } from "@/components/ui/CropMarks";
 import { cn } from "@/lib/utils";
 
 /**
@@ -110,18 +112,19 @@ export function Quote() {
         <section
             id="quote"
             aria-label="הצעת מחיר"
-            className="relative py-10 md:py-16 px-3 md:px-6"
+            className="relative py-8 md:py-16 px-3 md:px-6"
         >
             {/* Outer green frame — quotes the "large rounded green support shape" from 11.png */}
-            <div className="max-w-6xl mx-auto bg-green rounded-[40px] md:rounded-[52px] p-3 md:p-5">
+            <div className="max-w-6xl mx-auto bg-green rounded-[28px] md:rounded-[52px] p-2 md:p-5">
                 <div
                     className={cn(
-                        "relative rounded-[28px] md:rounded-[40px] overflow-hidden",
+                        "relative rounded-[24px] md:rounded-[40px] overflow-hidden",
                         "bg-white text-ink",
-                        "p-8 md:p-14",
+                        "p-5 md:p-14",
                         "shadow-xl shadow-ink/10"
                     )}
                 >
+                    <CropMarks inset={30} />
                     {/* Subtle green glow behind form */}
                     <div
                         className="absolute -top-32 -end-32 w-96 h-96 rounded-full bg-green/10 blur-[100px] pointer-events-none"
@@ -133,15 +136,17 @@ export function Quote() {
                     />
 
                     <div className="relative">
-                        <div className="grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr] gap-10 items-start">
+                        <div className="grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr] gap-6 lg:gap-10 items-start">
                             {/* Left column — copy + contact methods */}
                             <div>
-                                <p className="text-green-deep font-extrabold text-sm tracking-wide mb-3">
+                                <p className="text-green-deep font-extrabold text-sm md:text-base tracking-wide mb-3">
                                     הצעת מחיר מהירה
                                 </p>
-                                <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.05] mb-5">
-                                    שלחו את הפרטים — נחזור תוך שעה
-                                </h2>
+                                <ScanLine>
+                                    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.05] mb-5">
+                                        שלחו את הפרטים — נחזור תוך שעה
+                                    </h2>
+                                </ScanLine>
                                 <p className="text-ink-soft text-base md:text-lg leading-relaxed mb-7">
                                     ספרו לנו על הפרויקט וצרפו את הקובץ אם יש לכם.
                                     הצוות שלנו יבדוק את ההתאמה ויחזור עם הצעה מותאמת.
@@ -376,7 +381,7 @@ export function Quote() {
 }
 
 const inputClass = cn(
-    "w-full rounded-2xl bg-cream/60 border border-line",
+    "ink-underline w-full rounded-2xl bg-cream/60 border border-line",
     "px-4 py-3 text-ink placeholder:text-ink-soft/40",
     "focus:outline-none focus:border-green focus:ring-2 focus:ring-green/20",
     "transition-colors duration-200"
@@ -410,6 +415,7 @@ function Field({ id, label, name, type = "text", value, onChange, required, dir,
                 dir={dir}
                 placeholder={placeholder}
                 className={cn(inputClass, dir === "ltr" && "text-left")}
+                suppressHydrationWarning
             />
         </div>
     );

@@ -15,9 +15,9 @@ import { BRANCHES, PRIMARY_BRANCH, phoneHref } from "@/content/branches";
  */
 export function Footer() {
     return (
-        <footer className="relative pt-10 md:pt-14 pb-8 md:pb-10 px-5 md:px-10 border-t border-line/60" role="contentinfo">
+        <footer className="relative pt-8 md:pt-14 pb-6 md:pb-10 px-4 md:px-10 border-t border-line/60" role="contentinfo">
             <div className="max-w-7xl mx-auto">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
                     {/* Brand */}
                     <div>
                         <div className="mb-4">
@@ -129,7 +129,7 @@ export function Footer() {
                 </div>
 
                 {/* Bottom bar */}
-                <div className="mt-10 pt-5 border-t border-line/60 flex flex-col md:flex-row items-center justify-between gap-3">
+                <div className="mt-6 md:mt-10 pt-5 border-t border-line/60 flex flex-col md:flex-row items-center justify-between gap-3">
                     <p className="text-ink-soft/70 text-xs">
                         © {new Date().getFullYear()} C-Copy / שיא קופי. כל הזכויות שמורות.
                     </p>

@@ -14,7 +14,7 @@
   --color-line: #E5EAD9;
 
   --font-sans: var(--font-rubik), system-ui, sans-serif;
-  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-display: var(--font-heebo), system-ui, sans-serif;
 
   --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -265,6 +265,57 @@ body {
     r: 20;
     opacity: 1;
   }
+}
+
+/* Fountain-pen ink underline on focus — the bottom of the field
+   gets a green stripe drawn right→left (RTL natural) over ~250ms,
+   like ink being laid down. */
+.ink-underline {
+  background-image: linear-gradient(var(--color-green), var(--color-green));
+  background-size: 0% 2px;
+  background-position: right bottom;
+  background-repeat: no-repeat;
+  transition: background-size 0.25s ease-out;
+}
+.ink-underline:focus {
+  background-size: 100% 2px;
+}
+
+/* Hero registration intro — four CMYK crosshair marks at the corners
+   of the hero card snap-converge into registration on first paint,
+   then fade out. Pure CSS, fires once on mount. */
+@keyframes register-converge {
+  0%   { transform: translate(var(--rx, 0), var(--ry, 0)) scale(0.6); opacity: 0; }
+  20%  { opacity: 1; }
+  60%  { transform: translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(0, 0) scale(1); opacity: 0; }
+}
+.register-mark {
+  animation: register-converge 1.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Service card hover — soft green ink wash that follows the cursor.
+   --mx / --my are set via JS mousemove; the gradient lives in CSS so
+   React never re-renders on move. */
+.service-card {
+  --mx: 50%;
+  --my: 50%;
+}
+.service-card-wash {
+  background: radial-gradient(
+    260px circle at var(--mx) var(--my),
+    var(--color-green-pale),
+    transparent 65%
+  );
+}
+
+/* Crop marks on green-bordered trays — four registration crosshairs
+   that fade in on tray entry then settle. The .crop-marks wrapper
+   adds them via pseudo-positioned divs (see CropMarks.tsx). */
+@keyframes crop-mark-pulse {
+  0%   { opacity: 0; transform: scale(0.6); }
+  35%  { opacity: 1; transform: scale(1); }
+  100% { opacity: 0.18; transform: scale(1); }
 }
 
 /* Simulated printed-sample press image — a band of green ink running through

@@ -27,7 +27,7 @@ export default function BlogPage() {
                         מרכז ידע
                     </span>
                     <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-4">
-                        מאמרים ו<span className="font-display italic text-green">מדריכים</span>
+                        מאמרים ו<span className="font-display font-light text-green">מדריכים</span>
                     </h1>
                     <p className="text-lg text-white/60 max-w-2xl mx-auto">
                         מידע מקצועי על דפוס דיגיטלי, עיצוב, מוצרי דפוס ועוד — מהצוות של שיא קופי

@@ -50,6 +50,13 @@ export function ScrollReveal({
         const el = ref.current;
         if (!el) return;
 
+        // Guard against React Strict Mode double-invocation. Without this,
+        // gsap.from()'s "capture current as final" semantics combine with
+        // the cleanup-kill to leave elements stuck at the FROM state when
+        // the effect re-runs.
+        if (el.dataset.scrollRevealDone === "true") return;
+        el.dataset.scrollRevealDone = "true";
+
         const axis = direction === "up" || direction === "down" ? "y" : "x";
         const sign =
             direction === "up" ? 1 : direction === "down" ? -1 : direction === "left" ? 1 : direction === "right" ? -1 : 0;
@@ -58,11 +65,17 @@ export function ScrollReveal({
             direction === "none"
                 ? { opacity: 0 }
                 : { opacity: 0, [axis]: sign * distance };
+        const toVars =
+            direction === "none"
+                ? { opacity: 1 }
+                : { opacity: 1, [axis]: 0 };
 
         const targets = stagger > 0 ? el.children : el;
 
-        const anim = gsap.from(targets, {
-            ...fromVars,
+        // fromTo (not from) — explicit endpoints make the tween idempotent
+        // and survive cleanup → re-create cycles without getting "stuck."
+        const anim = gsap.fromTo(targets, fromVars, {
+            ...toVars,
             duration,
             delay,
             ease,
@@ -77,7 +90,8 @@ export function ScrollReveal({
 
         return () => {
             anim.scrollTrigger?.kill();
-            anim.kill();
+            // Don't kill the tween — let it complete in case Strict Mode
+            // re-invokes; the dataset guard prevents a second run anyway.
         };
     }, [prefersReduced, direction, distance, duration, delay, ease, start, stagger, pin]);
 

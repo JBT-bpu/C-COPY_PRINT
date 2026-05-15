@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { rubik, fraunces } from "./fonts";
+import { rubik, heebo } from "./fonts";
 import { LenisProvider } from "@/components/providers/LenisProvider";
 import { PrintFilterDefs } from "@/components/ui/PrintFilters";
 import { cn } from "@/lib/utils";
@@ -73,7 +73,7 @@ export default function RootLayout({
     <html
       lang="he"
       dir="rtl"
-      className={cn(rubik.variable, fraunces.variable, "antialiased")}
+      className={cn(rubik.variable, heebo.variable, "antialiased")}
     >
       <body className="bg-green text-ink min-h-dvh font-sans">
         {/* SVG filter definitions for print-house effects (hidden) */}

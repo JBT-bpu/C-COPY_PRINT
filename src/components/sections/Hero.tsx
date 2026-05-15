@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { BrandIcon } from "@/components/ui/BrandIcon";
 import { MagneticWrapper } from "@/components/animations/MagneticWrapper";
+import { CropMarks } from "@/components/ui/CropMarks";
 import { cn } from "@/lib/utils";
 
 /**
@@ -18,7 +18,7 @@ export function Hero() {
         <section
             id="hero"
             aria-label="Hero"
-            className="relative pt-24 md:pt-28 pb-12 md:pb-20 px-5 md:px-10"
+            className="relative pt-20 md:pt-28 pb-8 md:pb-20 px-4 md:px-10"
         >
             <div
                 className={cn(
@@ -26,9 +26,11 @@ export function Hero() {
                     "rounded-[36px] md:rounded-[44px] overflow-hidden",
                     "bg-ink border-[12px] md:border-[22px] border-green",
                     "shadow-[0_10px_0_0_var(--color-green-deep),0_30px_80px_rgba(141,198,65,0.30)]",
-                    "min-h-[72vh] md:min-h-[78vh]"
+                    "min-h-[60vh] md:min-h-[78vh]"
                 )}
             >
+                <CropMarks color="var(--color-cream)" inset={50} />
+                <HeroRegistration />
                 <video
                     autoPlay
                     muted
@@ -54,7 +56,7 @@ export function Hero() {
                 <div className="scan-line" aria-hidden />
 
                 {/* Centered overlay — kicker, headline, paragraph, CTAs */}
-                <div className="relative z-10 flex flex-col items-center justify-center text-center min-h-[inherit] px-6 py-16 md:py-24">
+                <div className="relative z-10 flex flex-col items-center justify-center text-center min-h-[inherit] px-5 py-12 md:py-24">
                     <span className="inline-flex items-center gap-2.5 rounded-pill bg-cream/95 backdrop-blur-sm border border-cream/40 px-4 py-2 shadow-sm mb-6">
                         <span className="flex gap-1" aria-hidden>
                             <span className="w-4 h-1.5 rounded-full bg-green" />
@@ -69,15 +71,15 @@ export function Hero() {
                         />
                     </span>
 
-                    <h1 className="font-extrabold tracking-tight leading-[0.98] text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-cream mb-6 max-w-3xl [text-shadow:0_2px_24px_rgba(15,26,5,0.55)]">
+                    <h1 className="font-extrabold tracking-tight leading-tight text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-cream mb-4 sm:mb-6 max-w-3xl [text-shadow:0_2px_24px_rgba(15,26,5,0.55)]">
                         דפוס שמתקדם
                         <br />
-                        <span className="font-display italic text-green-soft">
+                        <span className="font-display font-light text-green-soft print-reveal">
                             עסק שנראה טוב
                         </span>
                     </h1>
 
-                    <p className="text-base md:text-lg text-cream/90 leading-relaxed max-w-xl mb-8 [text-shadow:0_2px_18px_rgba(15,26,5,0.55)]">
+                    <p className="text-base md:text-lg text-cream/90 leading-relaxed max-w-xl mb-6 sm:mb-8 [text-shadow:0_2px_18px_rgba(15,26,5,0.55)]">
                         פתרונות דפוס, שילוט, פורמט רחב, מכון העתקות והדפסה על חומרים —
                         הכל במקום אחד, עם תוצאה חדה ומקצועית.
                     </p>
@@ -129,22 +131,73 @@ export function Hero() {
                         או דברו איתנו בוואטסאפ ←
                     </a>
                 </div>
-
-                {/* Floating green play control — bottom-end corner */}
-                <button
-                    type="button"
-                    aria-label="נגן סרטון תדמית"
-                    className={cn(
-                        "absolute bottom-6 end-6 md:bottom-8 md:end-8 z-20",
-                        "flex size-14 md:size-16 items-center justify-center rounded-full",
-                        "bg-green text-ink shadow-xl shadow-green/50",
-                        "hover:scale-110 hover:bg-green-soft transition-transform duration-300",
-                        "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-green"
-                    )}
-                >
-                    <BrandIcon name="play-video" className="size-6 md:size-7 ms-1" />
-                </button>
             </div>
         </section>
+    );
+}
+
+/**
+ * CMYK registration intro — four colored crosshair marks at the corners
+ * of the hero card. Each starts offset outward and converges into
+ * registration over ~700ms, then fades out. Pure CSS animation
+ * (.register-mark + @keyframes register-converge in globals.css);
+ * fires once on mount.
+ */
+function HeroRegistration() {
+    const inkSize = 22; // arm length
+    const inkThick = 2;
+    const drift = 14; // initial offset in px
+    const inset = 52; // margin from card edge (clears rounded corner)
+
+    const corners: Array<{
+        color: string;
+        pos: string;
+        rx: string;
+        ry: string;
+        delay: string;
+    }> = [
+        { color: "#00AEEF", pos: `top-[${inset}px] start-[${inset}px]`, rx: `${drift}px`, ry: `-${drift}px`, delay: "0s" },
+        { color: "#EC008C", pos: `top-[${inset}px] end-[${inset}px]`, rx: `-${drift}px`, ry: `-${drift}px`, delay: "0.08s" },
+        { color: "#FFF200", pos: `bottom-[${inset}px] start-[${inset}px]`, rx: `${drift}px`, ry: `${drift}px`, delay: "0.16s" },
+        { color: "#0F1A05", pos: `bottom-[${inset}px] end-[${inset}px]`, rx: `-${drift}px`, ry: `${drift}px`, delay: "0.24s" },
+    ];
+
+    return (
+        <div aria-hidden className="pointer-events-none absolute inset-0 z-30">
+            {corners.map((c, i) => (
+                <span
+                    key={i}
+                    className={cn("register-mark absolute block", c.pos)}
+                    style={{
+                        ["--rx" as string]: c.rx,
+                        ["--ry" as string]: c.ry,
+                        animationDelay: c.delay,
+                        width: `${inkSize}px`,
+                        height: `${inkSize}px`,
+                    }}
+                >
+                    {/* Horizontal arm */}
+                    <span
+                        className="absolute top-1/2 left-0 right-0"
+                        style={{
+                            height: `${inkThick}px`,
+                            background: c.color,
+                            transform: "translateY(-50%)",
+                            mixBlendMode: "multiply",
+                        }}
+                    />
+                    {/* Vertical arm */}
+                    <span
+                        className="absolute left-1/2 top-0 bottom-0"
+                        style={{
+                            width: `${inkThick}px`,
+                            background: c.color,
+                            transform: "translateX(-50%)",
+                            mixBlendMode: "multiply",
+                        }}
+                    />
+                </span>
+            ))}
+        </div>
     );
 }

@@ -1,3 +1,7 @@
+"use client";
+
+import { ScanLine } from "@/components/animations/ScanLine";
+import { CropMarks } from "@/components/ui/CropMarks";
 import { cn } from "@/lib/utils";
 
 /**
@@ -11,27 +15,30 @@ export function Technology() {
         <section
             id="technology"
             aria-label="טכנולוגיה"
-            className="relative py-16 md:py-24 px-5 md:px-10"
+            className="relative py-10 md:py-24 px-4 md:px-10"
         >
             <div className="max-w-7xl mx-auto">
                 <div
                     className={cn(
-                        "grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] items-center gap-8 md:gap-12",
-                        "p-8 md:p-14 rounded-[36px] md:rounded-[44px]",
-                        "bg-white border-[22px] border-green",
+                        "relative grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] items-center gap-8 md:gap-12",
+                        "p-5 md:p-14 rounded-[28px] md:rounded-[44px]",
+                        "bg-white border-[10px] md:border-[22px] border-green",
                         "shadow-[0_10px_0_0_var(--color-green-deep),0_30px_80px_rgba(141,198,65,0.30)]"
                     )}
                 >
+                    <CropMarks />
                     {/* Copy */}
                     <div>
-                        <p className="text-green-deep font-extrabold text-sm tracking-wide mb-2">
+                        <p className="text-green-deep font-extrabold text-sm md:text-base tracking-wide mb-2">
                             טכנולוגיה. אנשים. תוצאה.
                         </p>
-                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.05] text-ink mb-5">
-                            הדפסה שמרגישה מדויקת
-                            <br />
-                            כבר מהקובץ הראשון
-                        </h2>
+                        <ScanLine>
+                            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.05] text-ink mb-5">
+                                הדפסה שמרגישה מדויקת
+                                <br />
+                                כבר מהקובץ הראשון
+                            </h2>
+                        </ScanLine>
                         <p className="text-ink-soft text-base md:text-lg leading-relaxed mb-7 max-w-lg">
                             מכונות HP Indigo, מדפסות UV, ציוד פורמט רחב מהדור האחרון —
                             וצוות שמלווה אתכם מבדיקת קובץ ועד גימור מקצועי. נקי, ירוק,

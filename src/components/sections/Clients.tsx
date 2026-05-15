@@ -32,10 +32,10 @@ export function Clients() {
     return (
         <section
             ref={ref}
-            className="relative py-16 overflow-hidden"
+            className="relative py-10 md:py-16 overflow-hidden"
             aria-label="לקוחות"
         >
-            <div className="max-w-7xl mx-auto px-6 mb-8">
+            <div className="max-w-7xl mx-auto px-6 mb-5 md:mb-8">
                 <p className="text-center text-sm uppercase tracking-widest text-ink-soft/60">
                     לקוחות שבוטחים בנו
                 </p>
@@ -46,7 +46,7 @@ export function Clients() {
                     <span
                         key={i}
                         className={cn(
-                            "inline-flex items-center gap-4 text-3xl md:text-4xl font-display italic",
+                            "inline-flex items-center gap-4 text-2xl md:text-3xl font-display font-light tracking-tight",
                             "text-ink-soft/40"
                         )}
                     >

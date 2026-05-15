@@ -25,9 +25,9 @@ import { usePrefersReducedMotion } from "@/lib/motion";
 const INITIAL_VISIBLE = 0.1; // 10% drawn at start
 
 // Desktop stroke widths (≥ 1024 px viewport)
-const DESKTO_MAIN = 120;
-const DESKTO_SHADOW = 128;
-const DESKTO_BEVEL = 18;
+const DESKTO_MAIN = 88;
+const DESKTO_SHADOW = 96;
+const DESKTO_BEVEL = 14;
 
 /** Viewport-responsive scale: 1 on desktop, ~0.35 on 375 px mobile. */
 function strokeScale(W: number): number {
@@ -44,8 +44,8 @@ function strokeScale(W: number): number {
  */
 function buildStrokePath(W: number, H: number, scale: number): string {
     const mainW = Math.round(DESKTO_MAIN * scale);
-    const xR = W * 0.85;
-    const xL = W * 0.15;
+    const xR = W * 0.92;
+    const xL = W * 0.08;
     const xM = W * 0.50;
 
     // Generous bend radius — at least 2× the scaled stroke width so the
