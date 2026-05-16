@@ -565,13 +565,13 @@ body {
 /* ═══════════════════════════════════════════════════════════════
    DotGrid — responsive halftone dot field
    Desktop: 26px spacing, 1px dots
-   Mobile:  16px spacing, 0.6px dots (finer grain on small screens)
+   Mobile:  10px spacing, 0.4px dots (fine grain on small screens)
    ═══════════════════════════════════════════════════════════════ */
 
 .dot-grid-base {
   opacity: 0.05;
-  background-image: radial-gradient(circle, var(--color-ink) 0.6px, transparent 1px);
-  background-size: 16px 16px;
+  background-image: radial-gradient(circle, var(--color-ink) 0.4px, transparent 0.7px);
+  background-size: 10px 10px;
 }
 
 @media (min-width: 768px) {
@@ -583,14 +583,14 @@ body {
 
 .dot-grid-active {
   opacity: 0.5;
-  background-image: radial-gradient(circle, var(--color-green) 0.8px, transparent 1.2px);
-  background-size: 16px 16px;
+  background-image: radial-gradient(circle, var(--color-green) 0.5px, transparent 0.8px);
+  background-size: 10px 10px;
   -webkit-mask-image:
-    radial-gradient(circle 320px at var(--sx, 50%) var(--sy, 38%),
+    radial-gradient(circle 220px at var(--sx, 50%) var(--sy, 38%),
       rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.95) 22%, rgba(0, 0, 0, 0.7) 42%,
       rgba(0, 0, 0, 0.4) 60%, rgba(0, 0, 0, 0.15) 78%, transparent 100%);
   mask-image:
-    radial-gradient(circle 320px at var(--sx, 50%) var(--sy, 38%),
+    radial-gradient(circle 220px at var(--sx, 50%) var(--sy, 38%),
       rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.95) 22%, rgba(0, 0, 0, 0.7) 42%,
       rgba(0, 0, 0, 0.4) 60%, rgba(0, 0, 0, 0.15) 78%, transparent 100%);
 }
