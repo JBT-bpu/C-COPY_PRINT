@@ -61,16 +61,32 @@ export async function POST(request: NextRequest) {
         const completion = await llm.client.chat.completions.create({
             model: llm.model,
             temperature: 0.4,
-            max_tokens: 300,
+            max_tokens: 600,
             messages: [
                 { role: "system", content: SYSTEM_PROMPT },
                 ...messages.map((m) => ({ role: m.role, content: m.content })),
             ],
         });
 
-        const reply =
+        let reply =
             completion.choices[0]?.message?.content?.trim() ||
             "סליחה, לא הצלחתי לנסח תשובה. נסו לנסח שוב או פנו אלינו בטלפון 072-3316655.";
+
+        // Strip Gemini 2.5 "thinking" output (THOUGHT: ... until the actual answer)
+        const thoughtIdx = reply.indexOf("THOUGHT:");
+        if (thoughtIdx !== -1) {
+            // The actual answer comes after the thinking block
+            // Look for the first Hebrew character or newline after the thought
+            const afterThought = reply.slice(thoughtIdx);
+            const lines = afterThought.split("\n");
+            // Find the first line that looks like actual content (Hebrew or meaningful text)
+            const contentLines = lines.filter(
+                (l) => l.trim() && !l.startsWith("THOUGHT:") && !l.startsWith("Looking at") && !l.startsWith("The information") && !l.startsWith("Therefore") && !l.startsWith("Based on")
+            );
+            if (contentLines.length > 0) {
+                reply = contentLines.join("\n").trim();
+            }
+        }
 
         return NextResponse.json({ reply });
     } catch (error) {
