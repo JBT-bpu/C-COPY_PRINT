@@ -1,5 +1,6 @@
 import { Nav } from "@/components/layout/Nav";
 import { BrandStroke } from "@/components/ui/BrandStroke";
+import { DotGrid } from "@/components/ui/DotGrid";
 import { Hero } from "@/components/sections/Hero";
 import { Services } from "@/components/sections/Services";
 import { Clients } from "@/components/sections/Clients";
@@ -10,6 +11,7 @@ import { Products } from "@/components/sections/Products";
 import { Quote } from "@/components/sections/Quote";
 import { Footer } from "@/components/layout/Footer";
 import { WhatsAppFAB } from "@/components/layout/WhatsAppFAB";
+import { AssistantWidget } from "@/components/assistant/AssistantWidget";
 
 /**
  * Homepage — matches designes/11.png (per GLM5FROMC/PLAN.md)
@@ -31,6 +33,7 @@ export default function Home() {
     <>
       <Nav />
       <main id="main-content" className="relative">
+        <DotGrid />
         <BrandStroke />
         <Hero />
         <Services />
@@ -43,6 +46,7 @@ export default function Home() {
       </main>
       <Footer />
       <WhatsAppFAB />
+      <AssistantWidget />
     </>
   );
 }

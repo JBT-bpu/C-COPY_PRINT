@@ -22,7 +22,7 @@ import { usePrefersReducedMotion } from "@/lib/motion";
  * Reduced-motion: slab renders fully drawn, no pulse dot, no scroll tween.
  */
 
-const INITIAL_VISIBLE = 0.1; // 10% drawn at start
+const INITIAL_VISIBLE = 0.01; // 1% drawn at start
 
 // Desktop stroke widths (≥ 1024 px viewport)
 const DESKTO_MAIN = 88;
@@ -140,13 +140,19 @@ export function BrandStroke() {
         const startOffset = pathLength * (1 - INITIAL_VISIBLE);
 
         const updatePulse = (offset: number) => {
-            const circle = pulseRef.current;
-            if (!circle) return;
             const drawnLen = pathLength - offset;
             const clampedLen = Math.max(0, Math.min(drawnLen, pathLength));
             const pt = path.getPointAtLength(clampedLen);
-            circle.setAttribute("cx", `${pt.x}`);
-            circle.setAttribute("cy", `${pt.y}`);
+            const circle = pulseRef.current;
+            if (circle) {
+                circle.setAttribute("cx", `${pt.x}`);
+                circle.setAttribute("cy", `${pt.y}`);
+            }
+            // Drive the DotGrid active-mask: dots near the stroke head
+            // "ink up". Coords are main-px (viewBox = real px), same
+            // space as the DotGrid layer.
+            mainEl.style.setProperty("--sx", `${pt.x}px`);
+            mainEl.style.setProperty("--sy", `${pt.y}px`);
         };
 
         // Initial pulse position

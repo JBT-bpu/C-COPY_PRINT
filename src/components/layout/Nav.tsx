@@ -122,10 +122,10 @@ export function Nav() {
                         <Image
                             src="/images/logo.png"
                             alt="C-Copy — שיא קופי"
-                            width={140}
-                            height={44}
+                            width={320}
+                            height={96}
                             priority
-                            className="h-9 md:h-10 w-auto"
+                            className="h-12 md:h-16 w-auto"
                         />
                     </a>
 
