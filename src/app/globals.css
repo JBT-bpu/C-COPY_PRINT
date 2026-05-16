@@ -277,6 +277,7 @@ body {
   background-repeat: no-repeat;
   transition: background-size 0.25s ease-out;
 }
+
 .ink-underline:focus {
   background-size: 100% 2px;
 }
@@ -285,11 +286,26 @@ body {
    of the hero card snap-converge into registration on first paint,
    then fade out. Pure CSS, fires once on mount. */
 @keyframes register-converge {
-  0%   { transform: translate(var(--rx, 0), var(--ry, 0)) scale(0.6); opacity: 0; }
-  20%  { opacity: 1; }
-  60%  { transform: translate(0, 0) scale(1); opacity: 1; }
-  100% { transform: translate(0, 0) scale(1); opacity: 0; }
+  0% {
+    transform: translate(var(--rx, 0), var(--ry, 0)) scale(0.6);
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  60% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0;
+  }
 }
+
 .register-mark {
   animation: register-converge 1.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
@@ -301,21 +317,31 @@ body {
   --mx: 50%;
   --my: 50%;
 }
+
 .service-card-wash {
-  background: radial-gradient(
-    260px circle at var(--mx) var(--my),
-    var(--color-green-pale),
-    transparent 65%
-  );
+  background: radial-gradient(260px circle at var(--mx) var(--my),
+      var(--color-green-pale),
+      transparent 65%);
 }
 
 /* Crop marks on green-bordered trays — four registration crosshairs
    that fade in on tray entry then settle. The .crop-marks wrapper
    adds them via pseudo-positioned divs (see CropMarks.tsx). */
 @keyframes crop-mark-pulse {
-  0%   { opacity: 0; transform: scale(0.6); }
-  35%  { opacity: 1; transform: scale(1); }
-  100% { opacity: 0.18; transform: scale(1); }
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+
+  35% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0.18;
+    transform: scale(1);
+  }
 }
 
 /* Simulated printed-sample press image — a band of green ink running through
@@ -345,4 +371,193 @@ body {
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .8), transparent);
   filter: blur(8px);
   opacity: .55;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   AI Assistant Widget — FX
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Pulsing glow ring behind the launcher button.
+   Two concentric rings that breathe at different rates —
+   gives a CMYK registration-mark vibe. */
+.assistant-pulse-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 9999px;
+  border: 2px solid var(--color-green-soft);
+  opacity: 0;
+  animation: assistant-ring-pulse 2.4s ease-out infinite;
+  pointer-events: none;
+}
+
+.assistant-pulse-ring::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 9999px;
+  border: 2px solid var(--color-green);
+  opacity: 0;
+  animation: assistant-ring-pulse 2.4s ease-out infinite 0.8s;
+}
+
+@keyframes assistant-ring-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+
+/* Chat panel — responsive + slide-in animation */
+.assistant-panel {
+  inset-x: 0;
+  bottom: 0;
+  height: 85dvh;
+  border-radius: 28px 28px 0 0;
+  animation: assistant-slide-up 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (min-width: 640px) {
+  .assistant-panel {
+    inset-x: auto;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    /* LTR safe — end-6 is handled by RTL */
+    inset-inline-end: 1.5rem;
+    inset-inline-start: auto;
+    width: 400px;
+    height: 600px;
+    border-radius: 28px;
+  }
+}
+
+@keyframes assistant-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Typing indicator — three bouncing ink dots */
+.assistant-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-green);
+  animation: assistant-dot-bounce 1.2s ease-in-out infinite;
+}
+
+@keyframes assistant-dot-bounce {
+
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+
+  30% {
+    transform: translateY(-8px);
+    opacity: 1;
+  }
+}
+
+/* Message bubbles — slide in from the side */
+.assistant-msg {
+  animation: assistant-msg-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.assistant-msg-user {
+  --assistant-msg-from: translateX(24px);
+}
+
+.assistant-msg-bot {
+  --assistant-msg-from: translateX(-24px);
+}
+
+@keyframes assistant-msg-in {
+  from {
+    opacity: 0;
+    transform: var(--assistant-msg-from, translateX(0));
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Online indicator — gentle pulse */
+.assistant-online-dot {
+  animation: assistant-online-pulse 2s ease-in-out infinite;
+}
+
+@keyframes assistant-online-pulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 230, 118, 0.5);
+  }
+
+  50% {
+    box-shadow: 0 0 0 4px rgba(0, 230, 118, 0);
+  }
+}
+
+/* Auto-nudge tooltip — appears after 6s */
+.assistant-nudge {
+  position: relative;
+  background: var(--color-ink);
+  color: var(--color-cream);
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  white-space: nowrap;
+  box-shadow: 0 4px 20px rgba(15, 26, 5, 0.3);
+  animation: assistant-nudge-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  cursor: pointer;
+  border: none;
+}
+
+/* Small arrow pointing to the button */
+.assistant-nudge::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -6px;
+  transform: translateY(-50%);
+  border: 6px solid transparent;
+  border-left-color: var(--color-ink);
+  border-right: none;
+}
+
+/* RTL: flip the arrow */
+[dir="rtl"] .assistant-nudge::after {
+  right: auto;
+  left: -6px;
+  border-left-color: transparent;
+  border-right-color: var(--color-ink);
+}
+
+@keyframes assistant-nudge-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }

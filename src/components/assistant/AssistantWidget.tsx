@@ -11,6 +11,17 @@ const GREETING: Msg = {
         "היי! אני יועץ הדפוס של C-COPY. מה תרצו להדפיס? ספרו לי בכמה מילים ואכוון אתכם.",
 };
 
+/* ─── tiny ink-drop typing indicator ─── */
+function TypingDots() {
+    return (
+        <div className="me-auto flex items-center gap-1.5 bg-white border border-line rounded-2xl rounded-es-sm px-4 py-3">
+            <span className="assistant-dot" />
+            <span className="assistant-dot" style={{ animationDelay: "0.15s" }} />
+            <span className="assistant-dot" style={{ animationDelay: "0.3s" }} />
+        </div>
+    );
+}
+
 export function AssistantWidget() {
     const [open, setOpen] = useState(false);
     const [messages, setMessages] = useState<Msg[]>([GREETING]);
@@ -20,10 +31,13 @@ export function AssistantWidget() {
     const [contact, setContact] = useState({ name: "", phone: "", email: "" });
     const [summarySent, setSummarySent] = useState(false);
     const [summaryBusy, setSummaryBusy] = useState(false);
+    const [showNudge, setShowNudge] = useState(false);
+    const [nudgeDismissed, setNudgeDismissed] = useState(false);
 
     const scrollRef = useRef<HTMLDivElement>(null);
     const panelRef = useRef<HTMLDivElement>(null);
 
+    /* auto-scroll on new messages */
     useEffect(() => {
         scrollRef.current?.scrollTo({
             top: scrollRef.current.scrollHeight,
@@ -31,6 +45,7 @@ export function AssistantWidget() {
         });
     }, [messages, loading]);
 
+    /* Escape to close */
     useEffect(() => {
         if (!open) return;
         const onKey = (e: KeyboardEvent) => {
@@ -39,6 +54,13 @@ export function AssistantWidget() {
         window.addEventListener("keydown", onKey);
         return () => window.removeEventListener("keydown", onKey);
     }, [open]);
+
+    /* Auto-nudge: show tooltip after 6s if user hasn't opened chat */
+    useEffect(() => {
+        if (open || nudgeDismissed) return;
+        const timer = setTimeout(() => setShowNudge(true), 6000);
+        return () => clearTimeout(timer);
+    }, [open, nudgeDismissed]);
 
     async function send() {
         const text = input.trim();
@@ -99,30 +121,55 @@ export function AssistantWidget() {
         }
     }
 
+    function openChat() {
+        setOpen(true);
+        setShowNudge(false);
+        setNudgeDismissed(true);
+    }
+
     return (
         <>
-            {/* Launcher — bottom-end so it doesn't collide with WhatsApp (bottom-start) */}
+            {/* ─── Launcher button with pulsing ring ─── */}
             {!open && (
-                <button
-                    type="button"
-                    onClick={() => setOpen(true)}
-                    aria-label="פתיחת יועץ הדפוס"
-                    aria-expanded={false}
-                    className={cn(
-                        "fixed bottom-6 end-6 z-50 flex items-center gap-2",
-                        "rounded-pill bg-green text-ink ps-4 pe-5 py-3 font-extrabold",
-                        "shadow-lg shadow-green/40 hover:scale-105 hover:bg-green-soft",
-                        "transition-all duration-300",
-                        "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green"
+                <div className="fixed bottom-6 end-6 z-50 flex items-center gap-3">
+                    {/* Nudge tooltip */}
+                    {showNudge && !nudgeDismissed && (
+                        <button
+                            type="button"
+                            onClick={openChat}
+                            className="assistant-nudge"
+                        >
+                            שאלו אותנו הכל על דפוס! 💬
+                        </button>
                     )}
-                >
-                    <span className="flex size-7 items-center justify-center rounded-full bg-ink text-green text-sm font-black">
-                        ✦
-                    </span>
-                    יועץ דפוס
-                </button>
+
+                    {/* Pulsing ring behind the button */}
+                    <span className="assistant-pulse-ring" aria-hidden="true" />
+
+                    <button
+                        type="button"
+                        onClick={openChat}
+                        aria-label="פתיחת יועץ הדפוס"
+                        aria-expanded={false}
+                        className={cn(
+                            "relative flex items-center gap-2",
+                            "rounded-pill bg-green text-ink ps-4 pe-5 py-3 font-extrabold",
+                            "shadow-lg shadow-green/40 hover:scale-105 hover:bg-green-soft",
+                            "transition-all duration-300",
+                            "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green"
+                        )}
+                    >
+                        <span className="flex size-7 items-center justify-center rounded-full bg-ink text-green text-sm font-black">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+                            </svg>
+                        </span>
+                        יועץ דפוס
+                    </button>
+                </div>
             )}
 
+            {/* ─── Chat panel ─── */}
             {open && (
                 <div
                     ref={panelRef}
@@ -132,15 +179,26 @@ export function AssistantWidget() {
                     className={cn(
                         "fixed z-50 bg-cream flex flex-col overflow-hidden",
                         "shadow-2xl shadow-ink/30 border border-line",
-                        "inset-x-0 bottom-0 h-[85dvh] rounded-t-[28px]",
-                        "sm:inset-x-auto sm:bottom-6 sm:end-6 sm:h-[560px] sm:w-[380px] sm:rounded-[28px]"
+                        "assistant-panel",
                     )}
                 >
+                    {/* CMYK accent strip */}
+                    <div className="flex h-1 shrink-0" aria-hidden="true">
+                        <span className="flex-1 bg-[#00A0E3]" /> {/* Cyan */}
+                        <span className="flex-1 bg-[#E6007E]" /> {/* Magenta */}
+                        <span className="flex-1 bg-[#FEBF00]" /> {/* Yellow */}
+                        <span className="flex-1 bg-[#0F1A05]" /> {/* Key (black) */}
+                    </div>
+
                     {/* Header */}
                     <div className="flex items-center justify-between bg-green px-4 py-3">
                         <div className="flex items-center gap-2">
-                            <span className="flex size-8 items-center justify-center rounded-full bg-ink text-green font-black">
-                                ✦
+                            <span className="relative flex size-8 items-center justify-center rounded-full bg-ink text-green font-black">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+                                </svg>
+                                {/* Online indicator dot */}
+                                <span className="absolute -bottom-0.5 -start-0.5 size-3 rounded-full bg-[#00E676] border-2 border-green assistant-online-dot" />
                             </span>
                             <div className="leading-tight">
                                 <p className="font-extrabold text-ink text-sm">יועץ הדפוס</p>
@@ -167,19 +225,16 @@ export function AssistantWidget() {
                                 key={i}
                                 className={cn(
                                     "max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed whitespace-pre-wrap",
+                                    "assistant-msg",
                                     m.role === "user"
-                                        ? "ms-auto bg-green text-ink rounded-ee-sm"
-                                        : "me-auto bg-white text-ink border border-line rounded-es-sm"
+                                        ? "ms-auto bg-green text-ink rounded-ee-sm assistant-msg-user"
+                                        : "me-auto bg-white text-ink border border-line rounded-es-sm assistant-msg-bot"
                                 )}
                             >
                                 {m.content}
                             </div>
                         ))}
-                        {loading && (
-                            <div className="me-auto bg-white border border-line rounded-2xl rounded-es-sm px-4 py-3 text-sm text-ink-soft">
-                                כותב…
-                            </div>
-                        )}
+                        {loading && <TypingDots />}
                     </div>
 
                     {/* Summary form */}
@@ -254,9 +309,17 @@ export function AssistantWidget() {
                                     onClick={send}
                                     disabled={!input.trim() || loading}
                                     aria-label="שליחה"
-                                    className="size-10 shrink-0 rounded-full bg-green text-ink font-black disabled:opacity-40 hover:bg-green-soft transition-colors"
+                                    className={cn(
+                                        "size-10 shrink-0 rounded-full font-black transition-all duration-200",
+                                        "flex items-center justify-center",
+                                        input.trim() && !loading
+                                            ? "bg-ink text-cream hover:bg-ink-soft scale-100"
+                                            : "bg-green text-ink opacity-40"
+                                    )}
                                 >
-                                    ↑
+                                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+                                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+                                    </svg>
                                 </button>
                             </div>
                             {messages.length > 2 && (
