@@ -9,6 +9,15 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: process.cwd(),
   },
+  // The assistant routes read src/content/scraped-knowledge.txt via
+  // fs.readFileSync at module load. Next's dependency tracer doesn't
+  // reliably catch a dynamic readFileSync, so on Vercel the file can be
+  // missing from the serverless bundle → SCRAPED_KNOWLEDGE silently "".
+  // Force-include it in both function bundles.
+  outputFileTracingIncludes: {
+    "/api/assistant": ["./src/content/scraped-knowledge.txt"],
+    "/api/assistant/summary": ["./src/content/scraped-knowledge.txt"],
+  },
 };
 
 export default nextConfig;
