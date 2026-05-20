@@ -1,7 +1,7 @@
 "use client";
 
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
-import { ScanLine } from "@/components/animations/ScanLine";
+import { TitleLine } from "@/components/animations/TitleLine";
 import { SplitText } from "@/components/animations/SplitText";
 import { CountUp } from "@/components/ui/CountUp";
 import { CropMarks } from "@/components/ui/CropMarks";
@@ -26,15 +26,15 @@ export function About() {
                         <SectionTag>אודותינו</SectionTag>
 
                         <ScrollReveal>
-                            <ScanLine>
+                            <TitleLine>
                                 <SplitText stagger={0.04} duration={0.7} offsetY={30}>
-                                    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-ink mb-6">
+                                    <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight leading-[1.05] text-ink text-balance mb-6">
                                         בית דפוס
                                         <span className="font-display font-light text-green-deep"> שיא קופי </span>
                                         תל אביב
                                     </h2>
                                 </SplitText>
-                            </ScanLine>
+                            </TitleLine>
                         </ScrollReveal>
 
                         <ScrollReveal delay={0.1}>

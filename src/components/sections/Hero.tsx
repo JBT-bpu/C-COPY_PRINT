@@ -26,7 +26,7 @@ export function Hero() {
                     "rounded-[36px] md:rounded-[44px] overflow-hidden",
                     "bg-ink border-[12px] md:border-[22px] border-green",
                     "shadow-[0_10px_0_0_var(--color-green-deep),0_30px_80px_rgba(141,198,65,0.30)]",
-                    "min-h-[60vh] md:min-h-[78vh]"
+                    "aspect-video"
                 )}
             >
                 <CropMarks color="var(--color-cream)" inset={50} />
@@ -56,7 +56,7 @@ export function Hero() {
                 <div className="scan-line" aria-hidden />
 
                 {/* Centered overlay — kicker, headline, paragraph, CTAs */}
-                <div className="relative z-10 flex flex-col items-center justify-center text-center min-h-[inherit] px-5 py-12 md:py-24">
+                <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-5 py-8 md:py-12 overflow-y-auto">
                     <span className="inline-flex items-center gap-2.5 rounded-pill bg-cream/95 backdrop-blur-sm border border-cream/40 px-4 py-2 shadow-sm mb-6">
                         <span className="flex gap-1" aria-hidden>
                             <span className="w-4 h-1.5 rounded-full bg-green" />

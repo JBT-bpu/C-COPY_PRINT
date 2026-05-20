@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap, ScrollTrigger, registerGsap } from "@/lib/gsap";
 import { usePrefersReducedMotion } from "@/lib/motion";
-import { ScanLine } from "@/components/animations/ScanLine";
+import { TitleLine } from "@/components/animations/TitleLine";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { CropMarks } from "@/components/ui/CropMarks";
 import { cn } from "@/lib/utils";
@@ -209,11 +209,11 @@ export function Products() {
                         <p className="text-green-deep font-extrabold text-sm md:text-base tracking-wide mb-2">
                             מוצרים נבחרים
                         </p>
-                        <ScanLine>
-                            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.05] text-ink max-w-2xl">
+                        <TitleLine>
+                            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.05] text-ink max-w-2xl text-balance">
                                 דוגמאות דפוס שמרגישות כמו מוצר אמיתי
                             </h2>
-                        </ScanLine>
+                        </TitleLine>
                     </div>
                     <p className="text-ink-soft text-base md:text-lg leading-relaxed max-w-md">
                         הכרטיסים נראים כמו דוגמאות מודפסות שיוצאות ממכונה ונכנסות לתוך

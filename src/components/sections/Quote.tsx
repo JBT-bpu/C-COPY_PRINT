@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import { BrandIcon } from "@/components/ui/BrandIcon";
 import { PRIMARY_BRANCH, phoneHref } from "@/content/branches";
 import { MagneticWrapper } from "@/components/animations/MagneticWrapper";
-import { ScanLine } from "@/components/animations/ScanLine";
+import { TitleLine } from "@/components/animations/TitleLine";
 import { CropMarks } from "@/components/ui/CropMarks";
 import { cn } from "@/lib/utils";
 
@@ -142,11 +142,11 @@ export function Quote() {
                                 <p className="text-green-deep font-extrabold text-sm md:text-base tracking-wide mb-3">
                                     הצעת מחיר מהירה
                                 </p>
-                                <ScanLine>
-                                    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.05] mb-5">
+                                <TitleLine>
+                                    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.05] text-ink max-w-2xl text-balance mb-5">
                                         שלחו את הפרטים — נחזור תוך שעה
                                     </h2>
-                                </ScanLine>
+                                </TitleLine>
                                 <p className="text-ink-soft text-base md:text-lg leading-relaxed mb-7">
                                     ספרו לנו על הפרויקט וצרפו את הקובץ אם יש לכם.
                                     הצוות שלנו יבדוק את ההתאמה ויחזור עם הצעה מותאמת.

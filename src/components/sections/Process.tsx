@@ -1,6 +1,6 @@
 "use client";
 
-import { ScanLine } from "@/components/animations/ScanLine";
+import { TitleLine } from "@/components/animations/TitleLine";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 
 /**
@@ -54,11 +54,11 @@ export function Process() {
                         <p className="text-green-deep font-extrabold text-sm md:text-base tracking-wide mb-2">
                             איך זה עובד
                         </p>
-                        <ScanLine>
-                            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.05] text-ink max-w-2xl">
+                        <TitleLine>
+                            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.05] text-ink max-w-2xl text-balance">
                                 מקובץ ראשון ועד מוצר ביד — חמישה צעדים
                             </h2>
-                        </ScanLine>
+                        </TitleLine>
                     </div>
                     <p className="text-ink-soft text-base md:text-lg leading-relaxed max-w-sm">
                         תהליך עבודה בנוי לדיוק. כל שלב מותאם להבטיח תוצאת דפוס מקצועית
